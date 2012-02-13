@@ -1,0 +1,10 @@
+/**
+ * This function is called when a user clicks on "Übersicht".
+ * It fetches all parameter from the form and forwards to the MainController to load the bookings.
+ */
+function showBookings() {
+	var request = new Request.HTML({
+		url: "/BookingOverview/index",
+		update: $('bookingsBox') })
+		.post({	'do': 'showBookings'});
+}
