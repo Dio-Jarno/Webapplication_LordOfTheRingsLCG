@@ -11,7 +11,7 @@ import de.fhb.webapp.data.CardgameDB_CardVO;
 
 /**
  * 
- * @author Arvid Grunenberg
+ * @author Arvid Grunenberg, Thomas Habiger
  * @version 0.1 
  *
  */

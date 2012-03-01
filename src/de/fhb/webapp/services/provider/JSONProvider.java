@@ -15,6 +15,11 @@ import net.sf.json.JSONSerializer;
 
 import com.sun.jersey.spi.resource.Singleton;
 
+/**
+ * 
+ * @author Arvid Grunenberg, Thomas Habiger
+ *
+ */
 @Provider
 @Singleton
 public class JSONProvider implements MessageBodyWriter<Object> {

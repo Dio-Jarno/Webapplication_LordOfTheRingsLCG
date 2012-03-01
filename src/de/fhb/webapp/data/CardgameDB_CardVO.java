@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * 
- * @author Arvid Grunenberg
+ * @author Arvid Grunenberg, Thomas Habiger
  *
  */
 public class CardgameDB_CardVO {
