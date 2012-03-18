@@ -1,1 +1,4 @@
 /build/*
+WebContent/WEB-INF/lib/db2jcc_license_cisuz.jar
+
+WebContent/WEB-INF/lib/db2jcc.jar

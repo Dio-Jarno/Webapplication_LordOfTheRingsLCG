@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.fhb.webapp.data.CardgameDB_CardVO;
+import de.fhb.webapp.data.CardVO;
 
 /**
  * 
@@ -43,17 +43,17 @@ public class CardgameDBConnector {
 		return content.toString();
 	}
 	
-	public List<CardgameDB_CardVO> getCoreCards() {
+	public List getCoreCards() {
 		String content = loadContent(CARDS + "core/?per_page=200");
 		return createCardsSet(content);
 	}
 	
-	public List<CardgameDB_CardVO> getKhazadDumCards() {
+	public List getKhazadDumCards() {
 		String content = loadContent(CARDS + "khazad-dum/?per_page=200");
 		return createCardsSet(content);
 	}
 	
-	public List<CardgameDB_CardVO> getExtensionCards(int extension) {
+	public List getExtensionCards(int extension) {
 		final String MIRKWOOD = "shadows-of-mirkwood/";
 		String content = "";
 		switch (extension) {
@@ -76,34 +76,38 @@ public class CardgameDBConnector {
 		return null;
 	}
 	
-	protected List<CardgameDB_CardVO> createCardsSet(String content) {
-		List<CardgameDB_CardVO> cards = new ArrayList<CardgameDB_CardVO>();
-		CardgameDB_CardVO card;
-		content = content.split("<h3 class='maintitle'>")[1];
-		String[] cardTables = content.split("<table>");
-		for (String cardTable : cardTables) {
-			card = new CardgameDB_CardVO(cardTable);
-			if (card.getTitle() != null && !card.getTitle().equals("")) {
-				cards.add(card);
+	protected List createCardsSet(String content) {
+		List cards = new ArrayList();
+		CardVO card;
+		if (content.lastIndexOf("<h3 class='maintitle'>") != -1) {
+			content = content.split("<h3 class='maintitle'>")[1];
+			String[] cardTables = content.split("<table>");
+			for (int i=0; i<cardTables.length; i++) {
+				card = new CardVO(cardTables[i]);
+				if (card.getTitle() != null && !card.getTitle().equals("")) {
+					cards.add(card);
+				}
 			}
 		}
 		return cards;
 	}
 	
-	public List<CardgameDB_CardVO> getCards(String value) {
+	public List searchCards(String value) {
 		String content = loadContent(SEARCH + "?name=" + value);
 		return createCards(content);
 	}
 	
-	protected List<CardgameDB_CardVO> createCards(String content) {
-		List<CardgameDB_CardVO> cards = new ArrayList<CardgameDB_CardVO>();
-		CardgameDB_CardVO card;
-		content = content.split("id=\"resultsContainer\"")[1];
-		String[] cardTables = content.split("</li>");
-		for (String cardTable : cardTables) {
-			card = new CardgameDB_CardVO(cardTable);
-			if (card.getTitle() != null && !card.getTitle().equals("")) {
-				cards.add(card);
+	protected List createCards(String content) {
+		List cards = new ArrayList();
+		CardVO card;
+		if (content.lastIndexOf("id=\"resultsContainer\"") != -1) {
+			content = content.split("id=\"resultsContainer\"")[1];
+			String[] cardTables = content.split("</li>");
+			for (int i=0; i<cardTables.length; i++) {
+				card = new CardVO(cardTables[i]);
+				if (card.getTitle() != null && !card.getTitle().equals("")) {
+					cards.add(card);
+				}
 			}
 		}
 		return cards;

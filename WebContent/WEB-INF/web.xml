@@ -5,11 +5,11 @@
 	<servlet>
 		<servlet-name>REST-Servlet</servlet-name>
 		<display-name>REST-Servlet</display-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<servlet-class>de.fhb.webapp.services.CardWebservice</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>REST-Servlet</servlet-name>
-		<url-pattern>/services/*</url-pattern>
+		<url-pattern>/service</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

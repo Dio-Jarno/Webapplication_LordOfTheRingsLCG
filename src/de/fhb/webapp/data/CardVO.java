@@ -8,22 +8,25 @@ import java.util.Map;
  * @author Arvid Grunenberg, Thomas Habiger
  *
  */
-public class CardgameDB_CardVO {
+public class CardVO {
 	
-	protected Map<String, Object> values;
+	protected Map values;
 	protected String title;
 	
-	
-	public CardgameDB_CardVO(String cardTable) {
-		values = new HashMap<String, Object>();
+	public CardVO() {
+		values = new HashMap();
 		title = null;
+	}
+	
+	public CardVO(String cardTable) {
+		this();
 		buildVO(cardTable);
 	}
 	
 	protected void buildVO(String cardTable) {
-		if (cardTable.contains("<b>")) {
+		if (cardTable.lastIndexOf("<b>") != -1) {
 			String[] properties = cardTable.split("<b>");
-			if (properties[0].contains("javascript:showcarddetails")) {
+			if (properties[0].lastIndexOf("javascript:showcarddetails") != -1) {
 				properties[0] = properties[0].replaceAll("</a>.*</span>", "");
 			}
 			title = normalizeString(properties[0]);
@@ -31,23 +34,22 @@ public class CardgameDB_CardVO {
 				// at least one more property was found
 				for (int i=1; i<properties.length; i++) {
 					String property = properties[i];
-					if (property.contains("<br />")) {
+					if (property.lastIndexOf("<br />") != -1) {
 						// card has nested properties (e.g. 'text')
 						String[] parts = property.split("<br />");
-						if (!parts[0].contains(":")) {
+						if (parts[0].lastIndexOf(":") == -1) {
 							// traits were found
 							values.put("Traits", normalizeString(parts[0]));
 						}
 						String textPart = property.replaceAll(parts[0], "");
 						property = parts[0];
-						if (!textPart.isEmpty()) {
+						if (textPart != "") {
 							// text was found
 							String text = "";
-							if (textPart.contains("<i>")) {
+							if (textPart.lastIndexOf("<i>") != -1) {
 								String[] textParts = textPart.split("<i>");
 								text = normalizeString(textParts[0]);
 								if (textParts.length >= 2) {
-									//TODO was ist, wenn Karte nur favor text hat?
 									// flavor text was found
 									String flavorText = normalizeString(textParts[1]);
 									if (!flavorText.equals("")) {
@@ -62,16 +64,22 @@ public class CardgameDB_CardVO {
 							}
 						}
 					}
-					if (property.contains("</td>")) {
+					if (property.lastIndexOf("</td>") != -1) {
 						// cut comments
 						property = property.split("</td>")[0];
 					}
 					property = normalizeString(property);
 					if (!property.equals("")) {
-						if (property.contains(": ")) {
+						if (property.lastIndexOf(": ") != -1) {
 							// valid property with key:value
 						 	String[] keyValue = property.split(": ");
 						 	if (keyValue.length == 2) {
+						 		if (keyValue[1].startsWith(" ")) {
+						 			keyValue[1] = keyValue[1].substring(1);
+								}
+								if (keyValue[1].endsWith(" ")) {
+									keyValue[1] = keyValue[1].substring(0, keyValue[1].length() -1);
+								}
 						 		values.put(keyValue[0], keyValue[1]);
 						 	}
 						 }
@@ -89,6 +97,7 @@ public class CardgameDB_CardVO {
 		string = string.replaceAll("&#39;", "'");
 		string = string.replaceAll("&#33;", "!");
 		string = string.replaceAll("&bull; ", "*");
+		string = string.replaceAll("'", "`");
 		return string;
 	}
 	
@@ -96,12 +105,20 @@ public class CardgameDB_CardVO {
 		return values.get(key);
 	}
 	
-	public Map<String, Object> getValues() {
+	public Map getValues() {
 		return values;
+	}
+	
+	public void addValue(String key, Object value) {
+		values.put(key, value);
 	}
 	
 	public String getTitle() {
 		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }
