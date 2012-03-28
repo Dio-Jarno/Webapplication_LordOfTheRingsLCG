@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.fhb.webapp.MainManager;
+import de.fhb.webapp.ManagerInterface;
 import de.fhb.webapp.data.CardVO;
 
 /**
@@ -25,7 +26,7 @@ public class CardWebservice extends HttpServlet {
 
 	private static final long serialVersionUID = -1791214405002670519L;
 	
-	protected MainManager manager;
+	protected ManagerInterface manager;
 	
 	/**
 	 * Default constructor

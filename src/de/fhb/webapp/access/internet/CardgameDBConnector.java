@@ -7,24 +7,39 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.fhb.webapp.access.AccessInterface;
 import de.fhb.webapp.data.CardVO;
 
 /**
+ * This class fetches informations of the lord of the rings cards game from a internet site.
  * 
  * @author Arvid Grunenberg, Thomas Habiger
  * @version 0.1 
  *
  */
-public class CardgameDBConnector {
-	
-	protected static final String URL = "http://www.cardgamedb.com/index.php/lotr/";
-	protected static final String CARDS = "lord-of-the-rings-card-spoiler/_/";
-	protected static final String SEARCH = "lord-of-the-rings-advanced-card-search";
+public class CardgameDBConnector implements AccessInterface {
 	
 	/**
+	 * main part of the address
+	 */
+	protected static final String URL = "http://www.cardgamedb.com/index.php/lotr/";
+	
+	/**
+	 * context to game cards part
+	 */
+	protected static final String CARDS = "lord-of-the-rings-card-spoiler/_/";
+	
+	/**
+	 * context to search part
+	 */
+	protected static final String SEARCH = "lord-of-the-rings-advanced-card-search";
+	
+	
+	/**
+	 * Loads an HTML page.
 	 * 
-	 * @param domain
-	 * @return
+	 * @param domain - context of the HTML page
+	 * @return the HTML code of the result site; null if there is an error (e.g. the page is not availably)
 	 */
 	protected String loadContent(String domain) {
 		StringBuffer content = new StringBuffer();
@@ -37,23 +52,30 @@ public class CardgameDBConnector {
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 		return content.toString();
 	}
 	
-	public List getCoreCards() {
+	/**
+	 * Loads all cards of the core card set.
+	 * 
+	 * @return the result cards; null if there is an error
+	 */
+	public List loadCoreCards() {
 		String content = loadContent(CARDS + "core/?per_page=200");
 		return createCardsSet(content);
 	}
 	
-	public List getKhazadDumCards() {
+	public List loadKhazadDumCards() {
 		String content = loadContent(CARDS + "khazad-dum/?per_page=200");
 		return createCardsSet(content);
 	}
 	
-	public List getExtensionCards(int extension) {
+	public List loadExtensionCards(int extension) {
 		final String MIRKWOOD = "shadows-of-mirkwood/";
 		String content = "";
 		switch (extension) {
@@ -111,6 +133,10 @@ public class CardgameDBConnector {
 			}
 		}
 		return cards;
+	}
+
+	public boolean saveCards(List cards) {
+		return false;
 	}
 
 }

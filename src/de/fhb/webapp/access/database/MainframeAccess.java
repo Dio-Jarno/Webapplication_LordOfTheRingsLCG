@@ -1,5 +1,6 @@
 package de.fhb.webapp.access.database;
 
+import java.lang.annotation.Inherited;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,9 +10,17 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
 
+import de.fhb.webapp.access.AccessInterface;
 import de.fhb.webapp.data.CardVO;
 
-public class MainframeAccess implements DatabaseAccessInterface {
+/**
+ * This class opens a connection to an IBM mainframe. With this access it can save and load cards to/from the database.
+ * 
+ * @author Arvid Grunenberg, Thomas Habiger
+ * @version 0.2
+ *
+ */
+public class MainframeAccess implements AccessInterface {
 
 	protected final String URL = "jdbc:db2://binks.informatik.uni-leipzig.de:4019/S1D931";
 	protected final String USER = "***";
@@ -95,6 +104,12 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Loads all cards of a card set.
+	 * 
+	 * @param value - the short form of the card set's name, which should be loaded
+	 * @return the result cards; null if there is an error
+	 */
 	protected List loadCards(String value) {
 		List cards = new ArrayList();
 		try {
@@ -167,6 +182,14 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		}
 	}
 	
+	/**
+	 * Creates a new card and fills it with the first attributes.
+	 * 
+	 * @param currentCard - result set with informations of one card
+	 * @return a new card with the first attributes (attributes, which are in all cards same)
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 * @see CardVO
+	 */
 	protected CardVO createCard(ResultSet currentCard) throws SQLException {
 		CardVO card = new CardVO();
 		card.addValue("Number", new Integer(currentCard.getInt("NUMBER")));
@@ -180,6 +203,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return card;
 	}
 	
+	/**
+	 * Creates a list of all ally cards.
+	 * 
+	 * @param allyCardsTable - result set with informations of all ally cards
+	 * @return all cards of the table "ally" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createAllyCards(ResultSet allyCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -197,6 +227,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Creates a list of all attachment cards.
+	 * 
+	 * @param attachmentCardsTable - result set with informations of all attachment cards
+	 * @return all cards of the table "attachment" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createAttachmentCards(ResultSet attachmentCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -210,6 +247,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Creates a list of all enemy cards.
+	 * 
+	 * @param enemyCardsTable - result set with informations of all enemy cards
+	 * @return all cards of the table "enemy" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createEnemyCards(ResultSet enemyCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -227,6 +271,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Creates a list of all event cards.
+	 * 
+	 * @param eventCardsTable - result set with informations of all event cards
+	 * @return all cards of the table "event" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createEventCards(ResultSet eventCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -239,6 +290,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Creates a list of all hero cards.
+	 * 
+	 * @param heroCardsTable - result set with informations of all hero cards
+	 * @return all cards of the table "hero" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createHeroCards(ResultSet heroCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -256,6 +314,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Creates a list of all location cards.
+	 * 
+	 * @param locationCardsTable - result set with informations of all location cards
+	 * @return all cards of the table "location" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createLocationCards(ResultSet locationCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -270,6 +335,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Creates a list of all objective cards.
+	 * 
+	 * @param objectiveCardsTable - result set with informations of all objective cards
+	 * @return all cards of the table "objective" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createObjectiveCards(ResultSet objectiveCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -282,6 +354,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Creates a list of all quest cards.
+	 * 
+	 * @param questCardsTable - result set with informations of all quest cards
+	 * @return all cards of the table "quest" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createQuestCards(ResultSet questCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -295,6 +374,13 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return cards;
 	}
 	
+	/**
+	 * Creates a list of all treachery cards.
+	 * 
+	 * @param treacheryCardsTable - result set with informations of all treachery cards
+	 * @return all cards of the table "treachery" with all attributes
+	 * @throws SQLException If an attribute cannot be loaded correctly from the database table.
+	 */
 	protected List createTreacheryCards(ResultSet treacheryCardsTable) throws SQLException {
 		List cards = new ArrayList();
 		CardVO card;
@@ -353,6 +439,12 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		return true;
 	}
 	
+	/**
+	 * Creates a string with all standard attributes.
+	 * 
+	 * @param card - the card, from which the attributes should be created to a string
+	 * @return a string with all standard attributes
+	 */
 	protected String createStandardValues(CardVO card) {
 		StringBuffer query = new StringBuffer();
 		query.append(card.getValue("Number"));
@@ -361,30 +453,28 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		query.append(",");
 		query.append("'" + card.getValue("Type") + "'");
 		query.append(",");
-		if (card.getValue("Text") != null) {
-			query.append("'" + card.getValue("Text") + "'");
-		} else {
-			query.append("null");
-		}
+		query.append("'" + card.getValue("Text") + "'");
 		query.append(",");
-		if (card.getValue("Favor Text") != null) {
-			query.append("'" + card.getValue("Favor Text") + "'");
-		} else {
-			query.append("null");
-		}
+		query.append("'" + card.getValue("Favor Text") + "'");
 		query.append(",");
 		query.append("'" + card.getValue("Illustrator") + "'");
 		query.append(",");
 		query.append("'" + card.getValue("Set") + "'");
 		query.append(",");
 		query.append(card.getValue("Quantity"));
-		query.append(",");
 		return query.toString();
 	}
 	
+	/**
+	 * Saves an ally card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveAllyCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO ALLY VALUES ("+
-				createStandardValues(card) + "'" +
+				createStandardValues(card) + ",'" +
 				card.getValue("Sphere") + "'," +
 				card.getValue("Cost") + "," +
 				card.getValue("Hit Points") + "," +
@@ -393,7 +483,7 @@ public class MainframeAccess implements DatabaseAccessInterface {
 				card.getValue("Defense") + ",'" +
 				card.getValue("Traits") + "');");
 		statement.executeUpdate("INSERT INTO ALLY VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Sphere") + "'," +
 			card.getValue("Cost") + "," +
 			card.getValue("Hit Points") + "," +
@@ -404,32 +494,46 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		);
 	}
 	
+	/**
+	 * Saves an attachment card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveAttachmentCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO ATTACHMENT VALUES ("+
-				createStandardValues(card) + "'" +
+				createStandardValues(card) + ",'" +
 				card.getValue("Sphere") + "'," +
 				card.getValue("Cost") + ",'" +
 				card.getValue("Traits") + "');");
 		statement.executeUpdate("INSERT INTO ATTACHMENT VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Sphere") + "'," +
 			card.getValue("Cost") + ",'" +
 			card.getValue("Traits") + "');"
 		);
 	}
 	
+	/**
+	 * Saves an enemy card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveEnemyCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO ENEMY VALUES ("+
-				createStandardValues(card) + "'" +
+				createStandardValues(card) + ",'" +
 				card.getValue("Encounter Set") + "'," +
 				card.getValue("Threat Threashold") + "," +
-				card.getValue("Hit Points") + "," +
-				card.getValue("Threat") + "," +
-				card.getValue("Attack") + "," +
-				card.getValue("Defense") + ",'" +
+				card.getValue("Hit Points") + ",'" +
+				card.getValue("Threat") + "','" +
+				card.getValue("Attack") + "','" +
+				card.getValue("Defense") + "','" +
 				card.getValue("Traits") + "');");
 		statement.executeUpdate("INSERT INTO ENEMY VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Encounter Set") + "'," +
 			card.getValue("Threat Threashold") + "," +
 			card.getValue("Hit Points") + ",'" +
@@ -440,21 +544,35 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		);
 	}
 
+	/**
+	 * Saves an event card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveEventCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO EVENT VALUES ("+
-				createStandardValues(card) + "'" +
+				createStandardValues(card) + ",'" +
 				card.getValue("Sphere") + "','" +
 				card.getValue("Cost") + "');");
 		statement.executeUpdate("INSERT INTO EVENT VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Sphere") + "','" +
 			card.getValue("Cost") + "');"
 		);
 	}
 	
+	/**
+	 * Saves an hero card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveHeroCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO HERO VALUES ("+
-				createStandardValues(card) + "'" +
+				createStandardValues(card) + ",'" +
 				card.getValue("Sphere") + "'," +
 				card.getValue("Starting Threat") + "," +
 				card.getValue("Hit Points") + "," +
@@ -463,7 +581,7 @@ public class MainframeAccess implements DatabaseAccessInterface {
 				card.getValue("Defense") + ",'" +
 				card.getValue("Traits") + "');");
 		statement.executeUpdate("INSERT INTO HERO VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Sphere") + "'," +
 			card.getValue("Starting Threat") + "," +
 			card.getValue("Hit Points") + "," +
@@ -474,15 +592,22 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		);
 	}
 	
+	/**
+	 * Saves an location card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveLocationCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO LOCATION VALUES ("+
-				createStandardValues(card) + "'" +
-				card.getValue("Encounter Set") + "'," +
-				card.getValue("Threat") + "," +
-				card.getValue("Quest Points") + ",'" +
+				createStandardValues(card) + ",'" +
+				card.getValue("Encounter Set") + "','" +
+				card.getValue("Threat") + "','" +
+				card.getValue("Quest Points") + "','" +
 				card.getValue("Traits") + "');");
 		statement.executeUpdate("INSERT INTO LOCATION VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Encounter Set") + "','" +
 			card.getValue("Threat") + "','" +
 			card.getValue("Quest Points") + "','" +
@@ -490,38 +615,59 @@ public class MainframeAccess implements DatabaseAccessInterface {
 		);
 	}
 	
+	/**
+	 * Saves an objective card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveObjectiveCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO OBJECTIVE VALUES ("+
-				createStandardValues(card) + "'" +
+				createStandardValues(card) + ",'" +
 				card.getValue("Encounter Set") + "','" +
 				card.getValue("Traits") + "');");
 		statement.executeUpdate("INSERT INTO OBJECTIVE VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Encounter Set") + "','" +
 			card.getValue("Traits") + "');"
 		);
 	}
 	
+	/**
+	 * Saves an quest card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveQuestCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO QUEST VALUES ("+
-				createStandardValues(card) + "'" +
+				createStandardValues(card) + ",'" +
 				card.getValue("Encounter Set") + "','" +
-				card.getValue("Encounter Info") + "'," +
-				card.getValue("Quest Points") + ");");
+				card.getValue("Encounter Info") + "','" +
+				card.getValue("Quest Points") + "');");
 		statement.executeUpdate("INSERT INTO QUEST VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Encounter Set") + "','" +
 			card.getValue("Encounter Info") + "','" +
 			card.getValue("Quest Points") + "');"
 		);
 	}
 	
+	/**
+	 * Saves an treachery card to the database.
+	 * 
+	 * @param statement - statement, which executes the data insert
+	 * @param card - card, which should be saved
+	 * @throws SQLException if the insert statement occurs an error
+	 */
 	protected void saveTreacheryCard(Statement statement, CardVO card) throws SQLException {
 		System.out.println("INSERT INTO TREACHERY VALUES ("+
-				createStandardValues(card) + "'" +
+				createStandardValues(card) + ",'" +
 				card.getValue("Encounter Set") + "');");
 		statement.executeUpdate("INSERT INTO TREACHERY VALUES ("+
-			createStandardValues(card) + "'" +
+			createStandardValues(card) + ",'" +
 			card.getValue("Encounter Set") + "');"
 		);
 	}

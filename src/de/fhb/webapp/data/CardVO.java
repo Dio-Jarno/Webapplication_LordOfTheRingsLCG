@@ -105,6 +105,8 @@ public class CardVO {
 		return values.get(key);
 	}
 	
+	//TODO getter for values
+	
 	public Map getValues() {
 		return values;
 	}

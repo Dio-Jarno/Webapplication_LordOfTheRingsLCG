@@ -2,22 +2,22 @@ package de.fhb.webapp;
 
 import java.util.List;
 
+import de.fhb.webapp.access.AccessInterface;
 import de.fhb.webapp.access.database.*;
 import de.fhb.webapp.access.internet.CardgameDBConnector;
 
-public class MainManager {
+public class MainManager implements ManagerInterface {
 	
-	protected DatabaseAccessInterface databaseAccess;
-	protected CardgameDBConnector cardgameDBconnector;
+	protected AccessInterface dataAccess;
 	
 	
 	public MainManager() {
-		databaseAccess = new MainframeAccess();
+		dataAccess = new MainframeAccess();
 	}
 
 	public List searchCards(String value) {
 		List cards = null;
-		cards = databaseAccess.searchCards(value);
+		cards = dataAccess.searchCards(value);
 		if (cards == null || cards.isEmpty()) {
 			System.out.println("Keine Karten in der Datenbank gefunden.");
 		} else {
@@ -28,13 +28,13 @@ public class MainManager {
 
 	public List getCoreCards() {
 		List cards = null;
-		cards = databaseAccess.loadCoreCards();
+		cards = dataAccess.loadCoreCards();
 		if (cards == null || cards.isEmpty()) {
 			System.out.println("Keine Karten in der Datenbank vorhanden.");
-			cardgameDBconnector = new CardgameDBConnector();
-			cards = cardgameDBconnector.getCoreCards();
+			dataAccess = new CardgameDBConnector();
+			cards = dataAccess.loadCoreCards();
 			System.out.println("Karten aus dem Internet geladen.");
-			databaseAccess.saveCards(cards);
+			dataAccess.saveCards(cards);
 		} else {
 			System.out.println("Karten erfolgreich aus der Datenbank geladen.");
 		}
@@ -43,13 +43,13 @@ public class MainManager {
 
 	public List getKhazadDumCards() {
 		List cards = null;
-		cards = databaseAccess.loadKhazadDumCards();
+		cards = dataAccess.loadKhazadDumCards();
 		if (cards == null || cards.isEmpty()) {
 			System.out.println("Keine Karten in der Datenbank vorhanden.");
-			cardgameDBconnector = new CardgameDBConnector();
-			cards = cardgameDBconnector.getKhazadDumCards();
+			dataAccess = new CardgameDBConnector();
+			cards = dataAccess.loadKhazadDumCards();
 			System.out.println("Karten aus dem Internet geladen.");
-			databaseAccess.saveCards(cards);
+			dataAccess.saveCards(cards);
 		} else {
 			System.out.println("Karten erfolgreich aus der Datenbank geladen.");
 		}
@@ -58,13 +58,13 @@ public class MainManager {
 
 	public List getExtensionCards(int number) {
 		List cards = null;
-		cards = databaseAccess.loadExtensionCards(number);
+		cards = dataAccess.loadExtensionCards(number);
 		if (cards == null || cards.isEmpty()) {
 			System.out.println("Keine Karten in der Datenbank vorhanden.");
-			cardgameDBconnector = new CardgameDBConnector();
-			cards = cardgameDBconnector.getExtensionCards(number);
+			dataAccess = new CardgameDBConnector();
+			cards = dataAccess.loadExtensionCards(number);
 			System.out.println("Karten aus dem Internet geladen.");
-			databaseAccess.saveCards(cards);
+			dataAccess.saveCards(cards);
 		} else {
 			System.out.println("Karten erfolgreich aus der Datenbank geladen.");
 		}
